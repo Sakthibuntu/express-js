@@ -2,11 +2,18 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-app.get("/home", (req, res) => {
-  res.send("Hello World!");
-});
+const middleware = [mylogger, exlogger];
 
-app.get("/data", (req, res) => {
+function mylogger(req, res, next) {
+  console.log("My Logger Middleware");
+  next();
+}
+
+function exlogger(req, res, next) {
+  console.log("External Logger Middleware");
+}
+
+app.get("/home", middleware, (req, res) => {
   console.log("Data received");
   res.json({ message: "Data received" });
 });
